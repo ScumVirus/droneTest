@@ -6,34 +6,24 @@ clone:
   disable: true
 
 steps: 
-- name: restore-cache  
-  image: drillster/drone-volume-cache  
-  settings:  
-    restore: true    
-  volumes:  
-    - name: cache  
-      path: /cache
-
-
-# - name: clone
-#   image: alpine/git
-#   commands: 
-#   - git clone http://192.168.56.101:3000/ScumVirus/ScumVirus.git/ .
-#   - git checkout $DRONE_COMMIT
-
-# - name: ping
-#   image: alpine/git
-#   commands: 
-#   - git clone http://10.42.92.76:3000/ScumVirus/ScumVirus.git/ .
-#   - git checkout $DRONE_COMMIT
-
+# 拷贝代码
 - name: clone
   image: alpine/git
   commands: 
-  - git clone https://github.com/eddycjy/go-gin-example .
+  - git clone https://github.com/ScumVirus/droneTest .
   # - git checkout $DRONE_COMMIT
 
+# 编译打包
 - name: build
   image: golang:1.13
   commands: 
   - go build
+
+# 发布
+- name: docker
+  image: plugins/docker
+  settings:
+    username: scumvirus666
+    password: lsy123456
+    repo: scumvirus666/drone
+    tags: latest
